@@ -1,6 +1,25 @@
+// 회원정보테이블 MEMBERINFO
+// 광고메인테이블 ADVERTISEMAIN
+// 키워드관리테이블 KEYWORDBEFORE
+// 광고주정보테이블 ADVERTISER
+
 // 1. 광고 아이디별 과금 금액을 쿼리로 작성하시오
 
-
+SELECT A.아이디
+      ,SUM(B.과금금액) AS 아이디별과금금액
+FROM ADVERTISEMAIN A
+   ,(SELECT B.광고코드
+           ,SUM(B.설정한클릭당광고가격*B.클릭수) AS 과금금액
+     FROM KEYWORDBEFORE B
+     WHERE 1=1
+     AND NOT B.설정한클릭당광고가격 IS NULL
+     AND NOT B.클릭수 IS NULL
+     GROUP BY B.광고코드
+     ORDER BY B.광고코드 ASC
+     ) B
+WHERE 1=1
+AND A.광고코드 = B.광고코드
+GROUP BY A.아이디;
 
 // 2. 2023년 5월12일 기준 아이디별 "광고종료일"을 산출하시오 (만약 이미 지났다면, "기간만료" 값을 넣으면 됨)
 
