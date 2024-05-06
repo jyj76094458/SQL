@@ -55,7 +55,7 @@ WHERE A.아이디 NOT IN(SELECT B.아이디
 SELECT A.등록일
       ,A.광고설명
 FROM ADVERTISEMAIN A
-ORDER BY A.등록일;
+ORDER BY A.등록일 ASC;
 
 9. 2023년 5월12일 기준 활성화된 키워드별 노출수를 표시하시오 (단, 노출수가 가장 많은 데이터를 먼저 보여주시오)
 
