@@ -30,10 +30,20 @@ FROM ADVERTISER C
 LEFT JOIN (SELECT A.아이디
                  ,B.광고주
            FROM MEMBERINFO A
-              ,(SELECT * FROM ADVERTISEMAIN) B
+              ,(SELECT B.광고주
+                      ,B.아이디
+                FROM ADVERTISEMAIN B) B
            WHERE 1=1
            AND A.아이디=B.아이디
            ) B
 ON B.광고주 = C.광고주
 WHERE 1=1
 AND C.광고주 = 'taicode';
+
+// 4. 키워드별 클릭횟수를 표시하는 쿼리를 작성하시오
+
+SELECT A.광고키워드
+      ,NVL(SUM(A.클릭수),0) AS "키워드별 클릭횟수"
+FROM KEYWORDBEFORE A
+GROUP BY A.광고키워드;
+
