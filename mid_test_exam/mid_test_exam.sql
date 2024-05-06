@@ -47,3 +47,10 @@ SELECT A.광고키워드
 FROM KEYWORDBEFORE A
 GROUP BY A.광고키워드;
 
+// 6. 회원가입은 했으나 광고를 실행하지 않은 아이디 정보를 조회하는 쿼리를 작성하시오
+
+SELECT A.아이디
+FROM MEMBERINFO A
+WHERE A.아이디 NOT IN(SELECT B.아이디
+                   FROM ADVERTISEMAIN B);
+
