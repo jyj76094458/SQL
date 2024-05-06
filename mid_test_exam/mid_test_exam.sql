@@ -137,6 +137,31 @@ AND 광고종료일 NOT IN('기간만료')
 GROUP BY B.광고키워드
 ORDER BY SUM(B.노출수) DESC;
 
-10. 'haiteam' 사용자가 본인이 광고한 광고주소별 키워드를 조회하기위한 쿼리를 작성하시오
+// 10. 'haiteam' 사용자가 본인이 광고한 광고주소별 키워드를 조회하기위한 쿼리를 작성하시오
 
+SELECT A.아이디
+      ,A.광고주소
+      ,A.광고설명
+      ,B.광고키워드
+FROM ADVERTISEMAIN A
+LEFT JOIN(SELECT B.광고코드
+                ,B.광고키워드
+          FROM KEYWORDBEFORE B) B
+ON A.광고코드 = B.광고코드
+WHERE 1=1
+AND A.아이디 LIKE 'haiteam'
+AND A.광고설명 LIKE '%'||B.광고키워드||'%';
 
+-- 정답 -- 
+
+SELECT A.아이디
+      ,A.광고주소
+      ,B.광고키워드
+FROM ADVERTISEMAIN A
+LEFT JOIN(SELECT B.광고코드
+                ,B.광고키워드
+          FROM KEYWORDBEFORE B) B
+ON A.광고코드 = B.광고코드
+WHERE 1=1
+AND A.아이디 LIKE 'haiteam'
+AND A.광고설명 LIKE '%'||B.광고키워드||'%';
