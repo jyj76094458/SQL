@@ -83,9 +83,34 @@ FROM MEMBERINFO A
 WHERE A.아이디 NOT IN(SELECT B.아이디
                    FROM ADVERTISEMAIN B);
 
-7. 사용자별 광고 키워드 평균 가격을 조회하는 쿼리를 작성하시오 (단, 0은 평균 계산 시 포함, 빈값은 평균계산 시 미 포함)
+// 7. 사용자별 광고 키워드 평균 가격을 조회하는 쿼리를 작성하시오 (단, 0은 평균 계산 시 포함, 빈값은 평균계산 시 미 포함)
 
+SELECT A.아이디
+      ,SUM(B.설정한클릭당광고가격) 
+      ,SUM(B.클릭수)
+      ,AVG(B.설정한클릭당광고가격)
+      ,AVG(B.클릭수)
+      ,AVG(B.설정한클릭당광고가격*B.클릭수)
+      ,AVG(B.설정한클릭당광고가격) * AVG(B.클릭수)
+FROM ADVERTISEMAIN A
+LEFT JOIN(SELECT B.광고코드
+                ,B.설정한클릭당광고가격
+                ,B.클릭수
+          FROM KEYWORDBEFORE B) B
+ON A.광고코드 = B.광고코드
+GROUP BY A.아이디;
 
+-- 답안 --
+
+SELECT A.아이디
+      ,AVG(B.설정한클릭당광고가격 * B.클릭수) AS 사용자별광고키워드평균가격
+FROM ADVERTISEMAIN A
+LEFT JOIN(SELECT B.광고코드
+                ,B.설정한클릭당광고가격
+                ,B.클릭수
+          FROM KEYWORDBEFORE B) B
+ON A.광고코드 = B.광고코드
+GROUP BY A.아이디;
 
 // 8. 광고가 가장 먼저 등록된 시점이 언제인지 조회하는 쿼리를 작성하시오
 
