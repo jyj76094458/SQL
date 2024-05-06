@@ -94,9 +94,23 @@ SELECT A.등록일
 FROM ADVERTISEMAIN A
 ORDER BY A.등록일 ASC;
 
-9. 2023년 5월12일 기준 활성화된 키워드별 노출수를 표시하시오 (단, 노출수가 가장 많은 데이터를 먼저 보여주시오)
+// 9. 2023년 5월12일 기준 활성화된 키워드별 노출수를 표시하시오 (단, 노출수가 가장 많은 데이터를 먼저 보여주시오)
 
-
+SELECT B.광고키워드
+      ,SUM(B.노출수) AS 활성화된키워드별노출수
+FROM KEYWORDBEFORE B
+    ,(SELECT A.아이디
+            ,A.광고코드
+            ,CASE WHEN TO_DATE(A.등록일) + TO_NUMBER(LPAD(A.기간,2)) >= TO_DATE('2023/05/12', 'YYYY/MM/DD') THEN  TO_CHAR(TO_DATE(A.등록일) + TO_NUMBER(LPAD(A.기간,2)), 'YYYY/MM/DD')
+             WHEN TO_DATE(A.등록일) + TO_NUMBER(LPAD(A.기간,2)) < TO_DATE('2023/05/12', 'YYYY/MM/DD') THEN '기간만료'
+      	     END AS 광고종료일
+      FROM ADVERTISEMAIN A
+     ) A
+WHERE 1=1
+AND B.광고코드 = A.광고코드
+AND 광고종료일 NOT IN('기간만료')
+GROUP BY B.광고키워드
+ORDER BY SUM(B.노출수) DESC;
 
 10. 'haiteam' 사용자가 본인이 광고한 광고주소별 키워드를 조회하기위한 쿼리를 작성하시오
 
