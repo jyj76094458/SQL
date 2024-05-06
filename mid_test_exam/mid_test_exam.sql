@@ -20,3 +20,20 @@ SELECT A.아이디
       	     END AS 광고종료일
 FROM ADVERTISEMAIN A;
 
+// 3. kaifox가 본인 광고를 담당하는 담당자 정보 및 전화번호 및 이메일주소를 조회하기 위한 쿼리를 작성하시오
+
+SELECT B.아이디
+      ,C.담당자
+      ,C.전화번호
+      ,C.이메일주소
+FROM ADVERTISER C
+LEFT JOIN (SELECT A.아이디
+                 ,B.광고주
+           FROM MEMBERINFO A
+              ,(SELECT * FROM ADVERTISEMAIN) B
+           WHERE 1=1
+           AND A.아이디=B.아이디
+           ) B
+ON B.광고주 = C.광고주
+WHERE 1=1
+AND C.광고주 = 'taicode';
